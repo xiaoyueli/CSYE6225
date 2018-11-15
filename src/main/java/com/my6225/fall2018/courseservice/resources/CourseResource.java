@@ -18,78 +18,52 @@ import com.my6225.fall2018.courseservice.service.CourseService;
 @Path("courses")
 public class CourseResource {
 	
-	private CourseService service;
+	CourseService service = new CourseService();
 	public CourseResource() {
 		// TODO Auto-generated constructor stub
-		service = new CourseService();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Course> getAllCourses() {
+	public List<Course> getCourses() {
 		return service.getAllCourses();
 	}
 	
 	@GET
-	@Path("/{courseID}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Course getCourseById(@PathParam("courseID") int id) {
-		return service.getCourseByID(id);
+	public Course getCourseById(@PathParam("id") String id) {
+		return service.getCourseById(id);
 	}
 	
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Course addCourse(Course course) {
-		return service.addCourse(course);
+	public Course addCourse(Course cos) {
+		return service.addCourse(cos);
 	}
 	
 	@PUT
-	@Path("/{courseID}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Course updateCourseInformation(@PathParam("courseID") long id, Course course) {
-		return service.updateCourse(id, course);
+	public Course updateCourse(@PathParam("id") String id, Course cos) {
+		return service.updateCourse(id, cos);
 	}
 	
 	@DELETE
-	@Path("/{courseID}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Course deleteCourseByID(@PathParam("courseID") long id) {
-		return service.deleteCourseByID(id);
+	public Course deleteCourse(@PathParam("id") String id) {
+		return service.deleteCourse(id);
 	}
 	
 	@GET
-	@Path("/{courseID}/addprofessor/{professorID}")
+	@Path("/{courseID}/{studentID}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Course addProfessor(@PathParam("courseID") long courseID, @PathParam("professorID") long professorID) {
-		return service.addProfessor(courseID, professorID);
+	public Course addCourseID(@PathParam("courseID") String courseID, @PathParam("studentID") String stdID) {
+		return service.addStudentID(courseID, stdID);
 	}
-	
-	@DELETE
-	@Path("/{courseID}/deleteProfessor")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Course deleteProfessor(@PathParam("courseID") long courseID) {
-		return service.deleteProfessor(courseID);
-	}
-	
-	@GET
-	@Path("/{courseID}/addlecture/{lectureTitle}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Course addLecture(@PathParam("courseID") long courseID, @PathParam("lectureTitle") String lectureTitle) {
-		return service.addLecture(courseID, lectureTitle);
-	}
-	
-	@DELETE
-	@Path("/{courseID}/deletelecture/{lectureTitle}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Course deleteLecture(@PathParam("courseID") long courseID, @PathParam("lectureTitle") String lectureTitle) {
-		return service.deleteLecture(courseID, lectureTitle);
-	}
-
 }

@@ -1,5 +1,6 @@
 package com.my6225.fall2018.courseservice.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -27,9 +28,9 @@ public class ProfessorResource {
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path("/{professorId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Professor getProfessorById(@PathParam("id") String id) {
+	public Professor getProfessorById(@PathParam("professorId") int id) {
 		return service.getProfessorById(id);
 	}
 	
@@ -40,19 +41,23 @@ public class ProfessorResource {
 		return service.addProfessor(prof);
 	}
 	
+	public void addProfessor(String name, String dep, Date joiningDate) {
+		service.addProfessor(name, dep, joiningDate);
+	}
+	
 	@PUT
-	@Path("/{id}")
+	@Path("/{professorId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Professor updateProfessorInformation(@PathParam("id") String id, Professor prof) {
-		return service.updateProfessorInformation(id, prof);
+	public Professor updateProfessorInformation(@PathParam("professorId") int profId, Professor prof) {
+		return service.updateProfessorInformation(profId, prof);
 	}
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("/{professorId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Professor deleteProfessorById(@PathParam("id") String id) {
-		return service.deleteProfessorById(id);
+	public Professor deleteProfessorById(@PathParam("professorId") int profId) {
+		return service.deleteProfessorById(profId);
 	}
 }
