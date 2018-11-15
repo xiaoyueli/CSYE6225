@@ -1,147 +1,88 @@
-# CSYE6225
-Structure:
-datamodel: Lecture/LectureDB, Course/CourseDB, Professor/ProfessorDB, Student/StudentDB, Board, Toster
-Service: LectureService, CourseService, ProfessorService, StudentService
-Router: LectureResourse, CourseResourse, ProfessorResourse, StudentResourse
+# CSYE6225 
+## Structure:
+* datamodel: Student, Professor, Course, Board, Announcements, DynamoDBConnector
+* Service: StudentService, CourseService, ProfessorService, BoardService, AnnouncementsService
+* Router: StudentResourse, CourseResourse, ProfessorResourse, BoardResourse, AnnouncementsResourse
 
-RestFul operations:
-Example of Course Service:
+## RestFull Operation Example of Student
 
-partOne: create/update/delete course
-
-@GET all course
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/courses
-
-@POST
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/courses
-intput:
-{
-  "courseName":"JAVA"  
-}
-output:
-{
-    "courseID": 1,
-    "courseName": "JAVA",
-    "enrolledStudents": {
-        "entry": []
-    },
-    "lectures": {
-        "entry": []
-    }
-}
-
-@PUT
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/courses/1
+* Post Student: 
+```
+POST: http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/students/
 input:
 {
-  "courseName":"Cloud"
-}
-output:
-{
-    "courseID": 1,
-    "courseName": "Cloud",
-    "enrolledStudents": {
-        "entry": []
-    },
-    "lectures": {
-        "entry": []
-    }
-}
-
-@DELETE
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/courses/1
-
-=================================================================
-PartTwo: add professor to course
-
-<--Create professor in ProfessorDB-->
-@POST
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/professors
-input:
-{
-	"firstName":"Avinav",
+    "fitseName":"xiaohua",
+	"lastName":"wang",
 	"department":"Information Systems"
 }
+ output:
+{
+    "department": "Information Systems",
+    "id": "016d2c2a-0a30-414c-b522-08328904e0f6",
+    "joiningDate": "2018-11-15T08:01:42.993",
+    "lastName": "wang",
+    "registeredCourses": [],
+    "studentID": 1
+}
+```
+
+* Add course 
+```
+GET: http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/students/016d2c2a-0a30-414c-b522-08328904e0f6/info6225
 output:
 {
     "department": "Information Systems",
-    "firstName": "Avinav",
-    "professorID": 1,
-    "startDate": "2018-10-21T00:46:43.969"
+    "id": "016d2c2a-0a30-414c-b522-08328904e0f6",
+    "joiningDate": "2018-11-15T08:01:42.993",
+    "lastName": "wang",
+    "registeredCourses": [
+        "info6225"
+    ],
+    "studentID": 1
 }
+```
 
-<--Add professor 1 to course 1-->
-@GET
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/courses/1/addprofessor/1
-output:
-{
-    "courseID": 1,
-    "courseName": "Computer Science",
-    "enrolledStudents": {
-        "entry": []
-    },
-    "lectures": {
-        "entry": []
-    },
-    "prof": {
-        "department": "Information Systems",
-        "firstName": "Avinav",
-        "professorID": 1,
-        "startDate": "2018-10-21T00:46:43.969"
-    }
-}
-=================================================================================
-PartThree: add Lectures to course
+* Get all student
+```
+GET: http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/students
+```
 
-<--create Lecture in LectureDB-->
+* Get Student by ID
+```
+GET: http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/students/016d2c2a-0a30-414c-b522-08328904e0f6
+```
 
-@POST
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/lectures
+* Update Student
+```
+PUT: http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/students/016d2c2a-0a30-414c-b522-08328904e0f6
 input:
 {
-	"title":"cloudcomputing",
-	"notes":"cloud storage",
-	"matrials":"URLs • State is transferred from the server to the client • State is a point in time view of the data • Data can come in many forms - • Structured • Unstructured • Semi-Structured"
+	"fitseName":"xiaohua",
+	"lastName":"wang",
+	"department":"Computer Science"
 }
 output:
 {
-    "matrials": "URLs • State is transferred from the server to the client • State is a point in time view of the data • Data can come in many forms - • Structured • Unstructured • Semi-Structured",
-    "notes": "cloud storage",
-    "title": "cloudcomputing"
+    "department": "Computer Science",
+    "id": "016d2c2a-0a30-414c-b522-08328904e0f6",
+    "joiningDate": "2018-11-15T08:01:42.993",
+    "lastName": "wang",
+    "registeredCourses": [
+        "info6225"
+    ],
+    "studentID": 1
 }
+```
 
-<--add lecture of cloudcomputing to course 1-->
-@GET
-http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/courses/1/addlecture/cloudcomputing
-output:
-{
-    "courseID": 1,
-    "courseName": "Cloud",
-    "enrolledStudents": {
-        "entry": []
-    },
-    "lectures": {
-        "entry": [
-            {
-                "key": "cloudcomputing",
-                "value": {
-                    "matrials": "URLs • State is transferred from the server to the client • State is a point in time view of the data • Data can come in many forms - • Structured • Unstructured • Semi-Structured",
-                    "notes": "cloud storage",
-                    "title": "cloudcomputing"
-                }
-            }
-        ]
-    },
-    "prof": {
-        "department": "Information Systems",
-        "firstName": "Avinav",
-        "professorID": 1,
-        "startDate": "2018-10-21T00:46:43.969"
-    }
-}
+* Delete Student
+```
+Delete: http://xiaoyueli.us-east-2.elasticbeanstalk.com/webapi/students/016d2c2a-0a30-414c-b522-08328904e0f6
+```
 
-===========================================================================
-leave student, program to assignment2 :D
+
+
+
+
 
 
 
